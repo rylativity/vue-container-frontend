@@ -47,5 +47,19 @@ npm run serve
 ### Contributing
 Contributions are welcome! If you find any issues or would like to add new features, please open an issue or submit a pull request.
 
-License
+**Compiles and hot-reloads for development**
+```
+npm run serve
+```
+
+**Compiles and minifies for production**
+```
+npm run build
+```
+
+**Lints and fixes files**
+```
+npm run lint
+
+### License
 This project is licensed under the MIT License.
