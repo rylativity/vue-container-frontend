@@ -16,8 +16,6 @@
 <script>
 import ServiceCard from "./components/ServiceCard.vue";
 import yaml from "js-yaml";
-import { createApp } from "vue";
-import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
 
 export default {
@@ -73,7 +71,6 @@ export default {
   }
 };
 
-createApp().use(Vuetify).mount("#app");
 </script>
 
 <style>

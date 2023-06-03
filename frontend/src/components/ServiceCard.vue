@@ -1,41 +1,44 @@
 <template>
-    <div class="service-card" @click="navigateToService">
-      <h3>{{ serviceName }}</h3>
-      <ul>
-        <li v-for="port in portBindings" :key="port">
-          <strong>Port:</strong> {{ port }}
-        </li>
-      </ul>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      serviceName: {
-        type: String,
-        required: true
-      },
-      portBindings: {
-        type: Array,
-        required: true
-      }
+  <v-card @click="navigateToService">
+    <v-card-title>{{ serviceName }}</v-card-title>
+    <v-card-text>
+      <v-list>
+        <v-list-item v-for="binding in portBindings" :key="binding" @click="navigateToPort(binding)">
+          <v-list-item-title class="clickable">{{ binding }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-card-text>
+  </v-card>
+</template>
+
+<script>
+export default {
+  props: {
+    serviceName: {
+      type: String,
+      required: true
     },
-    methods: {
-      navigateToService() {
-        const port = this.portBindings[0].split(":")[0]; // Extract the first port in the format "hostPort:containerPort"
-        window.location.href = `http://localhost:${port}`;
-      }
+    portBindings: {
+      type: Array,
+      required: true
     }
-  };
-  </script>
-  
-  <style scoped>
-  .service-card {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
+  },
+  methods: {
+    navigateToService() {
+      const firstPortBinding = this.portBindings[0];
+      this.navigateToPort(firstPortBinding)
+    },
+    navigateToPort(portBinding) {
+      const portNumber = portBinding.split(":")[0];
+      const url = `http://localhost:${portNumber}`;
+      window.open(url, "_blank");
+    }
   }
-  </style>
-  
+};
+</script>
+
+<style>
+.clickable {
+  cursor: pointer;
+}
+</style>
