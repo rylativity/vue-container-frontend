@@ -1,15 +1,24 @@
 <template>
-  <div class="app">
-    <h1>Available Docker Services</h1>
-    <div v-for="service in services" :key="service.serviceName">
-      <service-card :service-name="service.serviceName" :port-bindings="service.portBindings" />
-    </div>
-  </div>
+  <v-app>
+    <v-main>
+      <v-container>
+        <h1 class="display-2 mb-4">Docker Compose Profile</h1>
+        <v-row>
+          <v-col v-for="service in services" :key="service.serviceName" cols="12" sm="6" md="4" lg="3">
+            <service-card :service-name="service.serviceName" :port-bindings="service.portBindings" />
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
 import ServiceCard from "./components/ServiceCard.vue";
 import yaml from "js-yaml";
+import { createApp } from "vue";
+import Vuetify from "vuetify";
+import "vuetify/dist/vuetify.min.css";
 
 export default {
   components: {
@@ -63,4 +72,10 @@ export default {
     }
   }
 };
+
+createApp().use(Vuetify).mount("#app");
 </script>
+
+<style>
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
+</style>
