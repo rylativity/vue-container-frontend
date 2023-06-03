@@ -1,8 +1,13 @@
 <template>
   <v-app>
+
+    <v-app-bar app color="primary" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title class="ml-4">Docker Services</v-toolbar-title>
+    </v-app-bar>
+
     <v-main>
-      <v-container>
-        <h1 class="display-2 mb-4">Docker Compose Profile</h1>
+      <v-container fluid>
         <v-row>
           <v-col v-for="service in services" :key="service.serviceName" cols="12" sm="6" md="4" lg="3">
             <service-card :service-name="service.serviceName" :port-bindings="service.portBindings" />
@@ -24,6 +29,8 @@ export default {
   },
   data() {
     return {
+      drawer: true,
+      miniVariant: false,
       services: []
     };
   },
@@ -67,10 +74,15 @@ export default {
       }
 
       this.services = services;
+    },
+    navigateToService(service) {
+      const firstPort = service.portBindings[0];
+      const portNumber = firstPort.split(":")[0];
+      const url = `http://localhost:${portNumber}`;
+      window.open(url, "_blank");
     }
   }
 };
-
 </script>
 
 <style>
