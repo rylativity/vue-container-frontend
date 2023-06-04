@@ -17,7 +17,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-main>
+    
 
     <v-divider></v-divider>
 
@@ -27,6 +27,7 @@
         <iframe :src="iframeURL" width="100%" height="400"></iframe>
       </v-card-text>
     </v-card>
+  </v-main>
   </v-app>
 </template>
 
