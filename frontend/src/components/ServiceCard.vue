@@ -1,9 +1,9 @@
 <template>
-  <v-card @click="handleCardClick">
+  <v-card @click="navigateToService">
     <v-card-title class="service-card-title">{{ serviceName }}</v-card-title>
     <v-card-text>
       <v-list>
-        <v-list-item v-for="binding in portBindings" :key="binding" @click="handlePortClick(binding)">
+        <v-list-item v-for="binding in portBindings" :key="binding">
           <v-list-item-title class="clickable">{{ binding }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -24,11 +24,8 @@ export default {
     }
   },
   methods: {
-    handleCardClick() {
+    navigateToService() {
       this.$emit("navigate", this.portBindings[0]);
-    },
-    handlePortClick(portBinding) {
-      this.$emit("navigate", portBinding);
     }
   }
 };
