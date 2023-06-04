@@ -1,6 +1,5 @@
 <template>
   <v-app>
-
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="ml-4">Docker Services</v-toolbar-title>
@@ -10,18 +9,30 @@
       <v-container fluid>
         <v-row>
           <v-col v-for="service in services" :key="service.serviceName" cols="12" sm="6" md="4" lg="3">
-            <service-card :service-name="service.serviceName" :port-bindings="service.portBindings" />
+            <service-card
+              :service-name="service.serviceName"
+              :port-bindings="service.portBindings"
+              @navigate="navigateToService"
+            />
           </v-col>
         </v-row>
       </v-container>
     </v-main>
+
+    <v-divider></v-divider>
+
+    <v-card>
+      <v-card-title>Preview</v-card-title>
+      <v-card-text>
+        <iframe :src="iframeURL" width="100%" height="400"></iframe>
+      </v-card-text>
+    </v-card>
   </v-app>
 </template>
 
 <script>
 import ServiceCard from "./components/ServiceCard.vue";
 import yaml from "js-yaml";
-import "vuetify/dist/vuetify.min.css";
 
 export default {
   components: {
@@ -31,27 +42,18 @@ export default {
     return {
       drawer: true,
       miniVariant: false,
-      services: []
+      services: [],
+      iframeURL: ""
     };
   },
   mounted() {
-    // Call the API to retrieve the docker-compose.yml file
-    // Replace this with your own logic to fetch the file
-    // Here, we'll use a hardcoded example for demonstration purposes
-    const dockerComposeFile = `
-      version: "3"
-      services:
-        web:
-          image: nginx:latest
-          ports:
-            - "80:80"
-        db:
-          image: mysql:latest
-          ports:
-            - "3306:3306"
-    `;
+    // Fetch the docker-compose.yml file
+    const filePath = "/static/docker-compose.yml";
 
-    this.parseDockerComposeFile(dockerComposeFile);
+    fetch(filePath)
+      .then((response) => response.text())
+      .then((data) => this.parseDockerComposeFile(data))
+      .catch((error) => console.error(error));
   },
   methods: {
     parseDockerComposeFile(fileContent) {
@@ -75,16 +77,14 @@ export default {
 
       this.services = services;
     },
-    navigateToService(service) {
-      const firstPort = service.portBindings[0];
-      const portNumber = firstPort.split(":")[0];
-      const url = `http://localhost:${portNumber}`;
-      window.open(url, "_blank");
+    navigateToService(portBinding) {
+      const portNumber = portBinding.split(":")[0];
+      this.iframeURL = `http://localhost:${portNumber}`;
     }
   }
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
+/* Your styles here */
 </style>
